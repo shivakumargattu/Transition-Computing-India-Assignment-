@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checklist Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .rule { margin: 10px 0; }
+    .passed { color: green; }
+    .failed { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Checklist Dashboard</h1>
+  <div id="results"></div>
+  <script>
+    async function fetchResults() {
+      const response = await fetch('/api/checklist/evaluate');
+      const data = await response.json();
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = '';
+      data.forEach(rule => {
+        const div = document.createElement('div');
+        div.className = `rule ${rule.status.toLowerCase()}`;
+        div.textContent = `${rule.description}: ${rule.status}`;
+        resultsContainer.appendChild(div);
+      });
+    }
+    fetchResults();
+  </script>
+</body>
+</html>
